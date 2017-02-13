@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, SSEScreenCaptureUIMode){
                         //提示窗大小
                         CGRect rect = CGRectMake(CGRectGetWidth([UIScreen mainScreen].bounds) - 130 , 100, 120, 160);
                         //显示时间
-                        NSTimeInterval showTime = 3.0;
+                        NSTimeInterval showTime = duration;
                         [[MobUIScreenshotShare shareInstance] showAlertModeWithImage:image
                                                                                frame:rect
                                                                             duration:showTime
@@ -122,6 +122,10 @@ typedef NS_ENUM(NSUInteger, SSEScreenCaptureUIMode){
     };
 }
 
+
+/**
+ 截屏通知
+ */
 - (void)start
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -130,8 +134,21 @@ typedef NS_ENUM(NSUInteger, SSEScreenCaptureUIMode){
                                                object:nil];
 }
 
+
+/**
+ 截屏通知业务处理
+ */
 - (void)_userDidTakeScreenshot:(NSNotification *)notification
 {
+    //全屏幕主要界面
+    //SSEScreenCaptureUIModeDefault
+    //此模式下 duration 无作用
+    
+    //弹出小窗提示模式
+    //SSEScreenCaptureUIModeAlert
+    //此模式下 duration 有效作用为 小窗的显示时间
+    
+    //useClientShare 说明是否优先使用平台客户端进行分享 两种模式下都起作用
     [self _screenCaptureShareWithMode:SSEScreenCaptureUIModeAlert
                              duration:3.0
                        useClientShare:YES];
