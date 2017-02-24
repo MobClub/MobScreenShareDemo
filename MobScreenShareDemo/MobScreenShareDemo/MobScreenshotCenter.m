@@ -149,7 +149,7 @@ typedef NS_ENUM(NSUInteger, SSEScreenCaptureUIMode){
     //此模式下 duration 有效作用为 小窗的显示时间
     
     //useClientShare 说明是否优先使用平台客户端进行分享 两种模式下都起作用
-    [self _screenCaptureShareWithMode:SSEScreenCaptureUIModeAlert
+    [self _screenCaptureShareWithMode:SSEScreenCaptureUIModeDefault
                              duration:3.0
                        useClientShare:YES];
 }

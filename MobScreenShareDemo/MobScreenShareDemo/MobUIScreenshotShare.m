@@ -167,6 +167,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void)showDefaultModeWithImage:(UIImage *)image
            selecetedPlatformType:(MUSSSelecetedPlatformType)selecetedPlatformType
 {
+    _selecetedPlatformType = selecetedPlatformType;
     if(self.window == nil)
     {
         self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
