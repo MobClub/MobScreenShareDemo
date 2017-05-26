@@ -363,6 +363,7 @@ static NSString * const cellReuseIdentifier = @"cellReuseIdentifier";
         {
             [activePlatformsArray addObject:@(SSDKPlatformSubTypeYiXinFav)];
         }
+        [activePlatformsArray removeObject:@(SSDKPlatformTypeYiXin)];
     }
     if ([activePlatformsArray containsObject:@(SSDKPlatformTypeKakao)])
     {
