@@ -108,10 +108,22 @@ typedef NS_ENUM(NSUInteger, SSEScreenCaptureUIMode){
             case SSDKResponseStateBegin:
                 break;
             case SSDKResponseStateSuccess:
+            {
+                NSString *msg = @"分享成功";
+                UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alerView show];
+                break;
+            }
             case SSDKResponseStateFail:
+            {
+                NSString *msg = [NSString stringWithFormat:@"分享失败 \nuserData = %@\ncontent entity = %@\nerror = %@", userData, contentEntity, error];
+                UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alerView show];
+                break;
+            }
             case SSDKResponseStateCancel:
             {
-                NSString *msg = [NSString stringWithFormat:@"state = %lu\nuserData = %@\ncontent entity = %@\nerror = %@", (unsigned long)state, userData, contentEntity, error];
+                NSString *msg = @"分享取消";
                 UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alerView show];
                 break;
