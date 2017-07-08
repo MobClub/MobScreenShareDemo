@@ -45,23 +45,23 @@ typedef NS_ENUM(NSUInteger, SSEScreenCaptureUIMode){
         return;
     }
     [SSEShareHelper screenCaptureShare:^(SSDKImage *sImage, SSEShareHandler shareHandler) {
-        //设置分享数据
         if(sImage != nil)
         {
-            NSMutableDictionary *params = [NSMutableDictionary dictionary];
-            [params SSDKSetupShareParamsByText:nil
-                                        images:sImage
-                                           url:nil
-                                         title:nil
-                                          type:SSDKContentTypeImage];
-            //设置 是否优先使用客户端进行分享
-            if (useClientShare)
-            {
-                [params SSDKEnableUseClientShare];
-            }
             [sImage getNativeImage:^(UIImage *image) {
                 if(image != nil)
                 {
+                    //设置分享数据
+                    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+                    [params SSDKSetupShareParamsByText:nil
+                                                images:image
+                                                   url:nil
+                                                 title:nil
+                                                  type:SSDKContentTypeImage];
+                    //设置 是否优先使用客户端进行分享
+                    if (useClientShare)
+                    {
+                        [params SSDKEnableUseClientShare];
+                    }
                     if(mode == SSEScreenCaptureUIModeAlert)
                     {
                         //提示窗大小
