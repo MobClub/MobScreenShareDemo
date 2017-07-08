@@ -147,6 +147,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [UIView animateWithDuration:0.25 animations:^{
         _alterView.alpha = 0;
     }completion:^(BOOL finished) {
+        [weakSelf _clear];
         weakSelf.window = nil;
     }];
 }
@@ -277,13 +278,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void)closeMainView
 {
+    __weak __typeof__ (self) weakSelf = self;
     CGRect newRect = _mainView.frame;
     newRect.origin.y += CGRectGetHeight(newRect);
     [UIView animateWithDuration:0.25 animations:^{
         _bgView.alpha = 0;
         _mainView.frame = newRect;
     }completion:^(BOOL finished) {
-        self.window = nil;
+        [weakSelf _clear];
+        weakSelf.window = nil;
     }];
 }
 
@@ -437,6 +440,34 @@ static NSString * const cellReuseIdentifier = @"cellReuseIdentifier";
     NSInteger platformType = [obj integerValue];
     _selecetedPlatformType(platformType);
     [self closeMainView];
+}
+
+- (void)_clear
+{
+    if(_image != nil)
+    {
+        _image = nil;
+    }
+    if(_alterView != nil)
+    {
+        [_alterView removeFromSuperview];
+        _alterView = nil;
+    }
+    if(_bgView != nil)
+    {
+        [_bgView removeFromSuperview];
+        _bgView = nil;
+    }
+    if(_mainView != nil)
+    {
+        [_mainView removeFromSuperview];
+        _mainView = nil;
+    }
+    if(activePlatformsArray != nil)
+    {
+        [activePlatformsArray removeAllObjects];
+        activePlatformsArray = nil;
+    }
 }
 
 @end
