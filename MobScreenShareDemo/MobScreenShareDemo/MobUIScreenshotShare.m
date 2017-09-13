@@ -21,7 +21,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     UIImage *_image;
     MUSSSelecetedPlatformType _selecetedPlatformType;
-    
     UIView *_alterView;
     UIView *_bgView;
     UIView *_mainView;
@@ -168,7 +167,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void)showDefaultModeWithImage:(UIImage *)image
            selecetedPlatformType:(MUSSSelecetedPlatformType)selecetedPlatformType
 {
-    _selecetedPlatformType = selecetedPlatformType;
     if(self.window == nil)
     {
         self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -220,13 +218,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CALayer *line = [CALayer layer];
     line.frame = rect;
     line.backgroundColor = UIColorFromRGB(0xd4d4d6).CGColor;
-    [toolView.layer addSublayer:line];
+    [toolView.contentView.layer addSublayer:line];
     //添加分享平台列表
     CGRect collectionRect = toolView.bounds;
     collectionRect.origin.y = 0;
     collectionRect.size.height -= 50;
     UICollectionView *collectionView = [self shareListViewWithFrame:collectionRect];
-    [toolView addSubview:collectionView];
+    [toolView.contentView addSubview:collectionView];
     //取消按钮
     CGRect buttonRect = toolView.bounds;
     buttonRect.origin.x = 0;
@@ -234,7 +232,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     buttonRect.size.width -= 0;
     buttonRect.size.height = 44;
     UIButton *cancelButton = [self cancelButtonWithFrame:buttonRect];
-    [toolView addSubview:cancelButton];
+    [toolView.contentView addSubview:cancelButton];
     [_mainView addSubview:toolView];
     [self.window addSubview:_mainView];
     [self showMainView];
@@ -278,9 +276,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void)closeMainView
 {
-    __weak __typeof__ (self) weakSelf = self;
     CGRect newRect = _mainView.frame;
     newRect.origin.y += CGRectGetHeight(newRect);
+    __weak __typeof__ (self) weakSelf = self;
     [UIView animateWithDuration:0.25 animations:^{
         _bgView.alpha = 0;
         _mainView.frame = newRect;
@@ -288,6 +286,34 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [weakSelf _clear];
         weakSelf.window = nil;
     }];
+}
+
+- (void)_clear
+{
+    if(_alterView != nil)
+    {
+        [_alterView removeFromSuperview];
+        _alterView = nil;
+    }
+    if(_mainView != nil)
+    {
+        [_mainView removeFromSuperview];
+        _mainView = nil;
+    }
+    if(_image != nil)
+    {
+        _image = nil;
+    }
+    if(_bgView != nil)
+    {
+        [_bgView removeFromSuperview];
+        _bgView = nil;
+    }
+    if(activePlatformsArray != nil)
+    {
+        [activePlatformsArray removeAllObjects];
+        activePlatformsArray = nil;
+    }
 }
 
 - (void)showMainView
@@ -366,6 +392,7 @@ static NSString * const cellReuseIdentifier = @"cellReuseIdentifier";
         {
             [activePlatformsArray addObject:@(SSDKPlatformSubTypeYiXinFav)];
         }
+        
         [activePlatformsArray removeObject:@(SSDKPlatformTypeYiXin)];
     }
     if ([activePlatformsArray containsObject:@(SSDKPlatformTypeKakao)])
@@ -440,34 +467,6 @@ static NSString * const cellReuseIdentifier = @"cellReuseIdentifier";
     NSInteger platformType = [obj integerValue];
     _selecetedPlatformType(platformType);
     [self closeMainView];
-}
-
-- (void)_clear
-{
-    if(_image != nil)
-    {
-        _image = nil;
-    }
-    if(_alterView != nil)
-    {
-        [_alterView removeFromSuperview];
-        _alterView = nil;
-    }
-    if(_bgView != nil)
-    {
-        [_bgView removeFromSuperview];
-        _bgView = nil;
-    }
-    if(_mainView != nil)
-    {
-        [_mainView removeFromSuperview];
-        _mainView = nil;
-    }
-    if(activePlatformsArray != nil)
-    {
-        [activePlatformsArray removeAllObjects];
-        activePlatformsArray = nil;
-    }
 }
 
 @end
